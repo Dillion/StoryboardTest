@@ -1,0 +1,54 @@
+>>>>>   Note that all forward segues have the same structure
+(example for when child vcs are kept on the stack)
+
+
+
+UIViewController *source = (UIViewController *)self.sourceViewController;
+UIViewController *dest = (UIViewController *)self.destinationViewController;
+
+[[source parentViewController] addChildViewController:dest];
+
+[dest beginAppearanceTransition:YES animated:YES];
+[source beginAppearanceTransition:YES animated:YES];
+[[source parentViewController].view addSubview:dest.view];
+
+/** prepare the animation here **/
+
+/** run the animation here **/
+
+// on animation completion
+[dest endAppearanceTransition];
+[source endAppearanceTransition];
+[dest didMoveToParentViewController:[source parentViewController]];
+
+
+
+
+>>>>>  All reverse segues have the same structure as well
+(example for when child vcs are kept on the stack)
+
+
+
+UIViewController *source = (UIViewController *)self.sourceViewController;
+UIViewController *dest = (UIViewController *)self.destinationViewController;
+
+[source willMoveToParentViewController:nil];
+[source beginAppearanceTransition:YES animated:YES];
+[dest beginAppearanceTransition:YES animated:YES];
+
+/** prepare the animation here **/
+
+/** run the animation here **/
+
+// on animation completion
+[dest endAppearanceTransition];
+[source endAppearanceTransition];
+[source.view removeFromSuperview];
+[source removeFromParentViewController];
+
+
+
+
+>>>>> This means that transition animation can be independent of the vc management logic!
+
+
